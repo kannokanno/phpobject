@@ -6,58 +6,24 @@
  * Time: 6:55
  * To change this template use File | Settings | File Templates.
  */
-require_once __DIR__ . "/ChargeCalucrator.php";
-require_once __DIR__ . "/MemberInfo.php";
-
 /**
  * Class CalcService
  */
 class CalcService
 {
-    private $calcrator;
+    private $rate;
 
-    /**
-     *
-     */
-    public function __construct()
+    public function __construct($rate)
     {
-        $this->calcrator = new ChargeCalucrator();
-    }
-
-    /**
-     * @param $filePath
-     */
-    public function showResult($filePath)
-    {
-        $memberInfoArray = $this->toMembers($filePath);
-        foreach ($memberInfoArray as $memberInfo) {
-            $this->printLine($memberInfo);
-        }
+        $this->rate = $rate;
     }
 
     /**
      * @param MemberInfo $memberInfo
+     * @return int
      */
-    private function printLine($memberInfo)
+    public function calcCharge($memberInfo)
     {
-        echo $memberInfo->name() . "さんへの請求額は、" . $this->calcrator->calcCharge($memberInfo) . "円です。" . PHP_EOL;
-    }
-
-    /**
-     * @param $filePath
-     * @return array
-     */
-    private function toMembers($filePath)
-    {
-        //ファイルのチェックはちょっとおいておこうか・・
-        $file = fopen($filePath, "r");
-
-        $users = array();
-        while ($csvValues = fgetcsv($file)) {
-            $users[] = new MemberInfo($csvValues);
-        }
-        @fclose($filePath);
-
-        return $users;
+        return intval($memberInfo->charge()) * $this->rate->valueOf($memberInfo);
     }
 }

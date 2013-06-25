@@ -6,16 +6,15 @@
  * Time: 6:54
  * To change this template use File | Settings | File Templates.
  */
-require_once __DIR__ . "/Constants.php";
 class MemberInfo{
     private $name;
     private $memberKind;
     private $charge;
 
-    public function __construct($line) {
-        $this->name = $line[Constants::nameIndex()];
-        $this->memberKind = $line[Constants::memberKindIndex()];
-        $this->charge = $line[Constants::chargeIndex()];
+    public function __construct($name, $kind, $charge) {
+        $this->name = $name;
+        $this->memberKind = $kind;
+        $this->charge = $charge;
     }
 
     public function name(){
